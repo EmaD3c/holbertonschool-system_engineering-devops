@@ -67,4 +67,17 @@ Once the application server processes the request, it sends the data back to the
 3. **Security**:
    - Ensure that communication between components (web server to application server, etc.) is encrypted using HTTPS to prevent security vulnerabilities.
 
+---
+
+## Additional Required Components (to meet all task requirements)
+
+- An **additional server** was added to improve scalability and allow distribution of components across dedicated machines.
+
+- An **additional HAProxy load balancer** is configured in cluster mode to avoid a single point of failure and ensure high availability.
+
+- The infrastructure is now fully **split by components**, with:
+  - One or more **dedicated web servers** handling only static content.
+  - One or more **dedicated application servers** responsible only for business logic and dynamic requests.
+  - A **dedicated database server** (with optional replica) managing all persistent storage operations.
+
 ![](task4_.png)
