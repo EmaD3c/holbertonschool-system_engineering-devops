@@ -37,6 +37,17 @@ The **Primary MySQL database** handles write operations (e.g., updates or insert
 Each server is equipped with a **monitoring client** (e.g., Sumo Logic or Prometheus) that:
 - Tracks metrics like server load, query per second (QPS), and traffic patterns.
 - Sends collected data to a centralized monitoring service for real-time analysis and alerts.
+- An alert is configured to trigger if the **QPS exceeds a threshold** (e.g., 1000 QPS):
+
+```yaml
+- alert: HighQPS
+  expr: sum(rate(http_requests_total[1m])) > 1000
+  for: 1m
+  labels:
+    severity: warning
+  annotations:
+    summary: High number of HTTP requests per second
+```
 
 ---
 
@@ -49,17 +60,20 @@ Once the application server completes processing the request:
 ---
 
 ## Issues with the Infrastructure
-1. **SSL Termination at the Load Balancer**: 
-   - Traffic between the load balancer and backend servers is not encrypted.
-   - To address this, enable HTTPS end-to-end encryption.
 
-2. **Single Primary Database**:
-   - A single writable database creates a bottleneck.
+1. **SSL Termination at the Load Balancer**:  
+   - Traffic between the load balancer and backend servers is not encrypted.  
+   - To address this, enable **HTTPS end-to-end encryption**, ensuring secure communication throughout the infrastructure.
+
+2. **Single Primary Database**:  
+   - A single writable database creates a bottleneck.  
    - Implement failover mechanisms or sharding for better scalability.
 
-3. **Identical Servers**:
-   - Having the same components on all servers reduces specialization.
+3. **Identical Servers**:  
+   - Having the same components on all servers reduces specialization.  
    - Use dedicated servers for specific roles (e.g., separate application and database servers).
+
+---
 
 
 ![](task3_.png)
