@@ -1,22 +1,56 @@
 # Web Infrastructure Explanation
 
 ## 1. User Initiates the Request
-I’m a user, and I want to access the website by typing `www.foobar.com` in my browser.
+
+I'm a user, and I want to access the website by typing `www.foobar.com` in my browser.
 
 ## 2. Domain Name System (DNS) Resolution
-To do this, my browser sends a DNS request to translate `www.foobar.com` into an IP address. The DNS server responds with the IP address `8.8.8.8`, which is the address of the server hosting the website. Now my browser knows where to send the request.
 
-## 3. Sending the HTTP/HTTPS Request
-My browser sends an HTTP or HTTPS request to the server at IP address `8.8.8.8`. The request asks for the homepage of the website, typically `index.html`. This request is routed through the internet to reach the server.
+To do this:
+- My browser sends a DNS request to translate `www.foobar.com` (A record) into IP `8.8.8.8`
+- The server is located in a data center and can be physical or virtual
+- It runs an operating system (typically Linux) hosting all components
 
-## 4. Reaching the Server (Nginx)
-When the request reaches the server, it is handled by a web server called **Nginx**. Nginx examines the request and decides how to process it. 
+## 3. Server Components Overview
 
-- **Static Content**: If the request is for static content, like an image or a CSS file, Nginx serves it directly from its storage.
-- **Dynamic Content**: If the request is dynamic (for example, retrieving user-specific content), Nginx forwards it to the application server. The application server runs the logic of the website, which is built using code hosted on the server. This code might be written in Python, PHP, or another language.
+1. **Web Server (Nginx)**:
+   - Handles HTTP/HTTPS requests
+   - Serves static content directly
+   - Forwards dynamic requests to application server
 
-## 5. Rendering the Webpage
-My browser receives the HTML, CSS, JavaScript, and other assets, and it renders the webpage for me to view. I can now interact with the website.
+2. **Application Server**:
+   - Processes business logic (Python/PHP code)
+   - Connects to database for data storage/retrieval
 
+3. **Database (MySQL)**:
+   - Stores all structured application data
+   - Handles SQL queries from application server
+
+4. **Application Files**:
+   - Codebase containing website logic
+   - Hosted on the same server
+
+## 4. Communication Flow
+
+- **User ↔ Server**: TCP/IP network via HTTP/HTTPS
+- **Internal Components**:
+  - Web Server ↔ App Server
+  - App Server ↔ Database (SQL queries)
+
+## 5. Infrastructure Limitations
+
+1. **Single Point of Failure**:
+   - Entire system fails if server fails (no redundancy)
+
+2. **Maintenance Downtime**:
+   - Website unavailable during deployments/restarts
+
+3. **Scaling Issues**:
+   - Cannot handle traffic beyond single server capacity
+
+4. **Security Risks**:
+   - All components on one server increases vulnerability
+
+## Diagram
 
 ![](task0_.png)
