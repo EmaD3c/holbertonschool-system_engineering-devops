@@ -1,56 +1,54 @@
-# Web Infrastructure Explanation
+# Simple Web Infrastructure Design
 
-## 1. User Initiates the Request
+## 1. User Request Flow
+1. **User Access**:
+   - Types `www.foobar.com` in browser
+   - Initiates HTTP/HTTPS request
 
-I'm a user, and I want to access the website by typing `www.foobar.com` in my browser.
+2. **DNS Resolution**:
+   - `www.foobar.com` → A Record → IP `8.8.8.8`
+   - Server: Physical/Virtual machine in data center running Linux OS
 
-## 2. Domain Name System (DNS) Resolution
-
-To do this:
-- My browser sends a DNS request to translate `www.foobar.com` (A record) into IP `8.8.8.8`
-- The server is located in a data center and can be physical or virtual
-- It runs an operating system (typically Linux) hosting all components
-
-## 3. Server Components Overview
-
+## 2. Server Components
 1. **Web Server (Nginx)**:
-   - Handles HTTP/HTTPS requests
-   - Serves static content directly
-   - Forwards dynamic requests to application server
+   - Handles HTTP/HTTPS (TCP/IP)
+   - Serves static files (HTML/CSS/JS)
+   - Proxies dynamic requests to application server
 
 2. **Application Server**:
-   - Processes business logic (Python/PHP code)
-   - Connects to database for data storage/retrieval
+   - Executes Python/PHP/Node.js code
+   - Processes business logic
+   - Connects to database via SQL
 
 3. **Database (MySQL)**:
-   - Stores all structured application data
-   - Handles SQL queries from application server
+   - Stores all application data
+   - Handles data persistence and queries
 
 4. **Application Files**:
-   - Codebase containing website logic
-   - Hosted on the same server
+   - Contains complete codebase
+   - Hosted on same server
 
-## 4. Communication Flow
+## 3. Communication Protocol
+- **External**: HTTP/HTTPS over TCP/IP (Ports 80/443)
+- **Internal**:
+  - Web Server ↔ App Server (FastCGI/WSGI)
+  - App Server ↔ Database (MySQL on port 3306)
 
-- **User ↔ Server**: TCP/IP network via HTTP/HTTPS
-- **Internal Components**:
-  - Web Server ↔ App Server
-  - App Server ↔ Database (SQL queries)
-
-## 5. Infrastructure Limitations
-
+## 4. Infrastructure Limitations
 1. **Single Point of Failure**:
-   - Entire system fails if server fails (no redundancy)
+   - No backup → Complete service outage if server fails
 
 2. **Maintenance Downtime**:
-   - Website unavailable during deployments/restarts
+   - Requires full restart for deployments
+   - Example: 5-10 minutes downtime per deployment
 
-3. **Scaling Issues**:
-   - Cannot handle traffic beyond single server capacity
+3. **Scaling Limitations**:
+   - Maximum ~10,000 concurrent users
+   - No horizontal scaling possible
 
 4. **Security Risks**:
-   - All components on one server increases vulnerability
+   - Compromise of one component risks entire system
 
-## Diagram
+## 5. Diagram
 
 ![](task0_.png)
